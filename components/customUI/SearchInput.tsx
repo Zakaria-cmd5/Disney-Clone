@@ -1,8 +1,48 @@
+"use client";
+
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import z from "zod";
+import { Form, FormControl, FormField, FormItem } from "../ui/form";
+import { Input } from "../ui/input";
+
+const searchFormSchema = z.object({
+  input: z.string().min(2).max(50),
+});
 
 const SearchInput = () => {
-  return (
-    <div>SearchInput</div>
-  )
-}
+  const router = useRouter();
 
-export default SearchInput
+  const form = useForm<z.infer<typeof searchFormSchema>>({
+    resolver: zodResolver(searchFormSchema),
+    defaultValues: {
+      input: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof searchFormSchema>) {
+    router.push(`/search/${values.input}`);
+    form.reset();
+  }
+
+  return (
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <FormField
+          control={form.control}
+          name="input"
+          render={({ field }) => (
+            <FormItem>
+              <FormControl>
+                <Input placeholder="Search..." {...field} />
+              </FormControl>
+            </FormItem>
+          )}
+        />
+      </form>
+    </Form>
+  );
+};
+
+export default SearchInput;
