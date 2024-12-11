@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import GenreSelector from "../customUI/GenreSelector";
 import SearchInput from "../customUI/SearchInput";
 import { ModeToggle } from "../modeToggle/ModeToggle";
 
@@ -16,8 +17,8 @@ const Header = () => {
         />
       </Link>
       <div className="flex space-x-2">
+        <GenreSelector />
         <SearchInput />
-        {/* <GenreSelector /> */}
         <ModeToggle />
       </div>
     </header>
